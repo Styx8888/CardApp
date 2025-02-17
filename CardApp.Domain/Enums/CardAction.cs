@@ -1,6 +1,6 @@
 ﻿namespace CardApp.Domain.Enums
 {
-    public enum AllowedActions
+    public enum CardAction
     {
         Action1,
         Action2,
