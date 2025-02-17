@@ -1,4 +1,5 @@
-﻿using CardApp.Application.Services;
+﻿using CardApp.Application.Actions;
+using CardApp.Application.Services;
 using CardApp.Domain.Enums;
 using Shouldly;
 
@@ -10,7 +11,7 @@ namespace CardApp.UnitTests.Services
         [MemberData(nameof(AllowedActionsData))]
         public void GetAllowedActions_GivenAllData_ReturnsCorrectActions(CardType cardType, CardStatus cardStatus, bool isPinSet, List<CardAction> expectedAllowedActions)
         {
-            var cardActionsService = new CardActionService();
+            var cardActionsService = new CardActionService(new AllowedActions());
             var possibleActions = cardActionsService.GetAllowedActions(cardType, cardStatus, isPinSet);
             possibleActions.ShouldBe(expectedAllowedActions, true);
         }
