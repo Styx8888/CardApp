@@ -4,8 +4,8 @@ namespace CardApp.Application.Actions.Interfaces
 {
     public interface IAllowedActions
     {
-        List<AllowedActions> GetAllowedActions(CardType cardType);
+        List<CardAction> GetAllowedActions(CardType cardType);
 
-        List<AllowedActions> GetAllowedActions(CardStatus cardStatus, bool pinSet);
+        List<CardAction> GetAllowedActions(CardStatus cardStatus, bool pinSet);
     }
 }
