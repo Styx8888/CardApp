@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using CardApp.Application.Actions;
 using CardApp.Application.Actions.Interfaces;
 using CardApp.Application.Services;
@@ -13,6 +14,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ICardActionService, CardActionService>();
 builder.Services.AddSingleton<IAllowedActions, AllowedActions>();
 builder.Services.AddSingleton<ICardDetailsService, CardDetailsService>();
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var app = builder.Build();
 
