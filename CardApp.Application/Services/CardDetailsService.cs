@@ -1,9 +1,10 @@
-﻿using CardApp.Domain;
+﻿using CardApp.Application.Services.Interfaces;
+using CardApp.Domain;
 using CardApp.Domain.Enums;
 
 namespace CardApp.Application.Services
 {
-    public class CardService
+    public class CardDetailsService : ICardDetailsService
     {
         private readonly Dictionary<string, Dictionary<string, CardDetails>> _userCards = CreateSampleUserCards();
         public async Task<CardDetails?> GetCardDetails(string userId, string cardNumber)
