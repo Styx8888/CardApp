@@ -3,6 +3,8 @@ using CardApp.Application.Actions;
 using CardApp.Application.Actions.Interfaces;
 using CardApp.Application.Services;
 using CardApp.Application.Services.Interfaces;
+using CardApp.Web.Validators;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddValidatorsFromAssemblyContaining<UserIdCardRequestValidator>();
 
 builder.Services.AddSingleton<ICardActionService, CardActionService>();
 builder.Services.AddSingleton<IAllowedActions, AllowedActions>();
@@ -35,9 +39,20 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("api/card/actions", async (string userId, string cardNumber, ICardDetailsService cardDetailsService, ICardActionService cardActionService) =>
+app.MapGet("api/card/actions", async (
+    string userId,
+    string cardNumber,
+    ICardDetailsService cardDetailsService,
+    ICardActionService cardActionService,
+    IValidator<(string userId, string cardNumber)> validator
+    ) =>
 {
-    // TODO: add validator here for userId and cardNumber 
+    var validationResult = await validator.ValidateAsync((userId, cardNumber));
+    if (!validationResult.IsValid)
+    {
+        return Results.ValidationProblem(validationResult.ToDictionary());
+    }
+
     var cardDetails = await cardDetailsService.GetCardDetails(userId, cardNumber);
     if (cardDetails == null)
     {
