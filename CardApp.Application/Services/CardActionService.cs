@@ -10,7 +10,7 @@ namespace CardApp.Application.Services
 
         public CardActionService(IAllowedActions allowedActions) => _allowedActions = allowedActions;
 
-        public List<CardAction> GetAllowedActions(CardType cardType, CardStatus cardStatus, bool isPinSet)
+        public IEnumerable<CardAction> GetAllowedActions(CardType cardType, CardStatus cardStatus, bool isPinSet)
         {
             var allowedActionsBasedOnCardType = _allowedActions.GetAllowedActions(cardType);
             var allowedActionsBasedOnCardStatusAndPin = _allowedActions.GetAllowedActions(cardStatus, isPinSet);

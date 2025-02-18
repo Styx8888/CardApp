@@ -4,6 +4,6 @@ namespace CardApp.Application.Services.Interfaces
 {
     public interface ICardActionService
     {
-        List<CardAction> GetAllowedActions(CardType cardType, CardStatus cardStatus, bool isPinSet);
+        IEnumerable<CardAction> GetAllowedActions(CardType cardType, CardStatus cardStatus, bool isPinSet);
     }
 }

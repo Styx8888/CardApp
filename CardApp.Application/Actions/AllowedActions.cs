@@ -5,7 +5,7 @@ namespace CardApp.Application.Actions
 {
     public class AllowedActions : IAllowedActions
     {
-        public List<CardAction> GetAllowedActions(CardType cardType)
+        public IEnumerable<CardAction> GetAllowedActions(CardType cardType)
         {
             return cardType switch
             {
@@ -16,48 +16,48 @@ namespace CardApp.Application.Actions
             };
         }
 
-        public List<CardAction> GetAllowedActions(CardStatus cardStatus, bool pinSet)
+        public IEnumerable<CardAction> GetAllowedActions(CardStatus cardStatus, bool pinSet)
         {
             return cardStatus switch
             {
-                CardStatus.Ordered => new List<CardAction>
-                {
+                CardStatus.Ordered =>
+                [
                     CardAction.Action3, CardAction.Action4, CardAction.Action5, 
                     pinSet ? CardAction.Action6 : CardAction.Action7, 
                     CardAction.Action8, CardAction.Action9, CardAction.Action10, CardAction.Action12, CardAction.Action13
-                },
-                CardStatus.Inactive => new List<CardAction>
-                    {
+                ],
+                CardStatus.Inactive =>
+                    [
                     CardAction.Action2, CardAction.Action3, CardAction.Action4, CardAction.Action5,
                     pinSet ? CardAction.Action6 : CardAction.Action7, 
                     CardAction.Action8, CardAction.Action9, CardAction.Action10, CardAction.Action11,
                     CardAction.Action12, CardAction.Action13
-                    },
-                CardStatus.Active => new List<CardAction>
-                    {
+                    ],
+                CardStatus.Active =>
+                    [
                     CardAction.Action1, CardAction.Action3, CardAction.Action4, CardAction.Action5,
                     pinSet ? CardAction.Action6 : CardAction.Action7,
                     CardAction.Action8, CardAction.Action9, CardAction.Action10, CardAction.Action11,
                     CardAction.Action12, CardAction.Action13
-                    },
-                CardStatus.Restricted => new List<CardAction>
-                    {
+                    ],
+                CardStatus.Restricted =>
+                    [
                     CardAction.Action3, CardAction.Action4, CardAction.Action5, CardAction.Action9
-                    },
+                    ],
                 CardStatus.Blocked => new List<CardAction>
                     {
-                    CardAction.Action3, CardAction.Action4, CardAction.Action5, // Always included
-                    CardAction.Action8, CardAction.Action9 // Always included
+                    CardAction.Action3, CardAction.Action4, CardAction.Action5,
+                    CardAction.Action8, CardAction.Action9
                     }.Concat(pinSet ? [CardAction.Action6, CardAction.Action7] : Enumerable.Empty<CardAction>()).ToList(),
-                CardStatus.Expired => new List<CardAction>
-                    {
+                CardStatus.Expired =>
+                    [
                     CardAction.Action3, CardAction.Action4, CardAction.Action5, CardAction.Action9
-                    },
-                CardStatus.Closed => new List<CardAction>
-                    {
+                    ],
+                CardStatus.Closed =>
+                    [
                     CardAction.Action3, CardAction.Action4, CardAction.Action5, CardAction.Action9
-                    },
-                _ => new List<CardAction>() 
+                    ],
+                _ => [] 
             };
         }
     }
